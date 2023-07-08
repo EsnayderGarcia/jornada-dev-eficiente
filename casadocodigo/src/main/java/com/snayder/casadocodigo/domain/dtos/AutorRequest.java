@@ -1,5 +1,6 @@
 package com.snayder.casadocodigo.domain.dtos;
 
+import com.snayder.casadocodigo.annotations.UniqueValue;
 import com.snayder.casadocodigo.domain.Autor;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,6 +13,7 @@ public class AutorRequest {
 
     @NotBlank(message = "O campo email é obrigatório.")
     @Email(message = "O email deve ser válido.")
+    @UniqueValue(fieldName = "email", message = "O email informado já consta no sistema.", domainClass = Autor.class)
     private String email;
 
     @NotBlank(message = "O campo descrição é obrigatório.")
