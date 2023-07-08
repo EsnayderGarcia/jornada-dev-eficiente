@@ -1,4 +1,4 @@
-package com.snayder.casadocodigo.controllers;
+package com.snayder.casadocodigo.resources;
 
 import com.snayder.casadocodigo.domain.Autor;
 import com.snayder.casadocodigo.domain.dtos.AutorRequest;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("autores")
 //3 pontos de entendimento
-public class AutorController {
+public class AutorResource {
     @PersistenceContext
     private EntityManager manager;
 
