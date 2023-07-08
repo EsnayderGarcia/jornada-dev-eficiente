@@ -2,8 +2,7 @@ package com.snayder.casadocodigo.domain.dtos;
 
 import com.snayder.casadocodigo.domain.Autor;
 
-import java.time.Instant;
-import java.util.Objects;
+import java.time.LocalDateTime;
 
 public class AutorResponse {
     private Long id;
@@ -14,7 +13,7 @@ public class AutorResponse {
 
     private String descricao;
 
-    private Instant instanteCriacao;
+    private LocalDateTime instanteCriacao;
 
     public AutorResponse(Autor autor) {
         id = autor.getId();
@@ -56,7 +55,7 @@ public class AutorResponse {
         this.descricao = descricao;
     }
 
-    public Instant getInstanteCriacao() {
+    public LocalDateTime getInstanteCriacao() {
         return instanteCriacao;
     }
 }

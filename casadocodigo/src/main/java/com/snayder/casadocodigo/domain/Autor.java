@@ -1,9 +1,8 @@
 package com.snayder.casadocodigo.domain;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -14,11 +13,12 @@ public class Autor {
 
     private String nome;
 
+    @Column(unique = true)
     private String email;
 
     private String descricao;
 
-    private Instant instanteCriacao = Instant.now();
+    private final LocalDateTime instanteCriacao = LocalDateTime.now();
 
     public Autor() {
     }
@@ -61,7 +61,7 @@ public class Autor {
         this.descricao = descricao;
     }
 
-    public Instant getInstanteCriacao() {
+    public LocalDateTime getInstanteCriacao() {
         return instanteCriacao;
     }
 
