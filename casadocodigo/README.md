@@ -11,6 +11,6 @@ Neste desafio serão implementadas algumas funcionalidades de uma api voltada pa
 ## Features do Sistema
 - Cadastrar um novo autor no sistema
 - Validador customizado genérico para verificar unicidade de determinada informação
-
+- Cadastrar uma nova categoria no sistema
 
 
