@@ -13,6 +13,10 @@ public class Categoria {
     @Column(unique = true)
     private String nome;
 
+    public Categoria(Long id) {
+        this.id = id;
+    }
+
     public Categoria(String nome) {
         this.nome = nome;
     }
