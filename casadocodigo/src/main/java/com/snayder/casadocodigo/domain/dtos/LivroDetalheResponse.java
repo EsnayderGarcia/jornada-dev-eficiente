@@ -5,7 +5,7 @@ import com.snayder.casadocodigo.domain.Livro;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class LivroResponse {
+public class LivroDetalheResponse {
     private Long id;
     private String titulo;
     private String resumo;
@@ -19,7 +19,7 @@ public class LivroResponse {
     private Long autorId;
     private String autor;
 
-    public LivroResponse(Livro livro) {
+    public LivroDetalheResponse(Livro livro) {
         id = livro.getId();
         titulo = livro.getTitulo();
         resumo = livro.getResumo();
