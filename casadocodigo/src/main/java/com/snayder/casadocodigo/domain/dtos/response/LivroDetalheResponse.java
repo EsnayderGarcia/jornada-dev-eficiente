@@ -1,4 +1,4 @@
-package com.snayder.casadocodigo.domain.dtos;
+package com.snayder.casadocodigo.domain.dtos.response;
 
 import com.snayder.casadocodigo.domain.Livro;
 

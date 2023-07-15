@@ -1,8 +1,8 @@
 package com.snayder.casadocodigo.resources;
 
-import com.snayder.casadocodigo.domain.Categoria;
-import com.snayder.casadocodigo.domain.dtos.request.CategoriaRequest;
-import com.snayder.casadocodigo.domain.dtos.response.CategoriaResponse;
+import com.snayder.casadocodigo.domain.Estado;
+import com.snayder.casadocodigo.domain.dtos.request.EstadoRequest;
+import com.snayder.casadocodigo.domain.dtos.response.EstadoResponse;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.Valid;
@@ -11,17 +11,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("categorias")
+@RequestMapping("estados")
 //3 pontos de entendimento
-public class CategoriaResource {
+public class EstadoResource {
     @PersistenceContext
     private EntityManager manager;
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    public CategoriaResponse salvar(@RequestBody @Valid CategoriaRequest request) {
-        Categoria novaCategoria = manager.merge(new Categoria(request.getNome()));
-        return new CategoriaResponse(novaCategoria);
+    public EstadoResponse salvar(@RequestBody @Valid EstadoRequest request) {
+        Estado novoEstado = manager.merge(request.toModel(manager));
+        return new EstadoResponse(novoEstado);
     }
 }

@@ -1,9 +1,9 @@
 package com.snayder.casadocodigo.resources;
 
 import com.snayder.casadocodigo.domain.Livro;
-import com.snayder.casadocodigo.domain.dtos.LivroMinResponse;
-import com.snayder.casadocodigo.domain.dtos.LivroRequest;
-import com.snayder.casadocodigo.domain.dtos.LivroDetalheResponse;
+import com.snayder.casadocodigo.domain.dtos.response.LivroMinResponse;
+import com.snayder.casadocodigo.domain.dtos.request.LivroRequest;
+import com.snayder.casadocodigo.domain.dtos.response.LivroDetalheResponse;
 import com.snayder.casadocodigo.exceptions.RecursoNaoEncontradoException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("livros")
-//4 pontos de entendimento
+//5  pontos de entendimento
 public class LivroResource {
     @PersistenceContext
     private EntityManager manager;

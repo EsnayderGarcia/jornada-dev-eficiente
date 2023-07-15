@@ -1,8 +1,8 @@
 package com.snayder.casadocodigo.resources;
 
 import com.snayder.casadocodigo.domain.Autor;
-import com.snayder.casadocodigo.domain.dtos.AutorRequest;
-import com.snayder.casadocodigo.domain.dtos.AutorResponse;
+import com.snayder.casadocodigo.domain.dtos.request.AutorRequest;
+import com.snayder.casadocodigo.domain.dtos.response.AutorResponse;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.Valid;

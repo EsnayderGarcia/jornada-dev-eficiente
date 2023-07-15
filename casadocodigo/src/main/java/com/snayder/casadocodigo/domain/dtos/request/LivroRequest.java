@@ -1,4 +1,4 @@
-package com.snayder.casadocodigo.domain.dtos;
+package com.snayder.casadocodigo.domain.dtos.request;
 
 import com.snayder.casadocodigo.annotations.ExistId;
 import com.snayder.casadocodigo.annotations.UniqueValue;
