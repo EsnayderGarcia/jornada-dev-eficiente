@@ -1,6 +1,8 @@
 package com.snayder.casadocodigo.resources;
 
+import com.snayder.casadocodigo.exceptions.RecursoNaoEncontradoException;
 import com.snayder.casadocodigo.utils.FieldMessage;
+import com.snayder.casadocodigo.utils.StandardError;
 import com.snayder.casadocodigo.utils.ValidationError;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,17 @@ import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
+	@ExceptionHandler(RecursoNaoEncontradoException.class)
+	public ResponseEntity<StandardError> recursoNaoEncontrado(HttpServletRequest req, RecursoNaoEncontradoException ex) {
+		StandardError error = new StandardError();
+
+		error.setTimestamp(LocalDateTime.now());
+		error.setStatus(HttpStatus.NOT_FOUND.value());
+		error.setErro(ex.getMessage());
+		error.setPath(req.getRequestURI());
+
+		return new ResponseEntity<StandardError>(error, HttpStatus.NOT_FOUND);
+	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ValidationError> atributosInvalidos(HttpServletRequest req, MethodArgumentNotValidException ex) {
