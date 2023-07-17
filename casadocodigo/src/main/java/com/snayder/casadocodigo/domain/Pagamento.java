@@ -22,13 +22,8 @@ public class Pagamento {
     private String documento;
 
     @Column(nullable = false)
-    private String complemento;
-
-    @Column(nullable = false)
-    private String endereco;
-
-    @Column(nullable = false)
-    private String cidade;
+    @Embedded
+    private Endereco endereco;
 
     @ManyToOne
     @JoinColumn(name = "paisId", nullable = false)
@@ -38,27 +33,17 @@ public class Pagamento {
     @JoinColumn(name = "estadoId")
     private Estado estado;
 
-    @Column(nullable = false)
-    private String telefone;
-
-    @Column(nullable = false)
-    private String cep;
-
     public Pagamento() {
     }
 
-    public Pagamento(String nome, String sobrenome, String email, String documento, String complemento, String endereco, String cidade, Pais pais, Estado estado, String telefone, String cep) {
+    public Pagamento(String nome, String sobrenome, String email, String documento, Endereco endereco, Pais pais, Estado estado) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.email = email;
         this.documento = documento;
-        this.complemento = complemento;
         this.endereco = endereco;
-        this.cidade = cidade;
         this.pais = pais;
         this.estado = estado;
-        this.telefone = telefone;
-        this.cep = cep;
     }
 
     public Long getId() {
@@ -67,14 +52,6 @@ public class Pagamento {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
     }
 
     public String getNome() {
@@ -109,20 +86,12 @@ public class Pagamento {
         this.documento = documento;
     }
 
-    public String getComplemento() {
-        return complemento;
+    public Endereco getEndereco() {
+        return endereco;
     }
 
-    public void setComplemento(String complemento) {
-        this.complemento = complemento;
-    }
-
-    public String getCidade() {
-        return cidade;
-    }
-
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
     public Pais getPais() {
@@ -139,22 +108,6 @@ public class Pagamento {
 
     public void setEstado(Estado estado) {
         this.estado = estado;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
     }
 }
 

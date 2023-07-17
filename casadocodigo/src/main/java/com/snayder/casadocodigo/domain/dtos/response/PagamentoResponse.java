@@ -1,5 +1,6 @@
 package com.snayder.casadocodigo.domain.dtos.response;
 
+import com.snayder.casadocodigo.domain.Endereco;
 import com.snayder.casadocodigo.domain.Pagamento;
 
 public class PagamentoResponse {
@@ -8,15 +9,11 @@ public class PagamentoResponse {
     private String sobrenome;
     private String email;
     private String documento;
-    private String complemento;
-    private String endereco;
-    private String cidade;
+    private Endereco endereco;
     private Long paisId;
     private String pais;
     private Long estadoId;
     private String estado;
-    private String telefone;
-    private String cep;
 
     public PagamentoResponse(Pagamento pagamento) {
         id = pagamento.getId();
@@ -24,15 +21,11 @@ public class PagamentoResponse {
         sobrenome = pagamento.getSobrenome();
         email = pagamento.getEmail();
         documento = pagamento.getDocumento();
-        complemento = pagamento.getComplemento();
         endereco = pagamento.getEndereco();
-        cidade = pagamento.getCidade();
         paisId = pagamento.getPais().getId();
         pais = pagamento.getPais().getNome();
         estadoId = pagamento.getEstado().getId();
         estado = pagamento.getEstado().getNome();
-        telefone = pagamento.getTelefone();
-        cep = pagamento.getCep();
     }
 
     public Long getId() {
@@ -55,16 +48,8 @@ public class PagamentoResponse {
         return documento;
     }
 
-    public String getComplemento() {
-        return complemento;
-    }
-
-    public String getEndereco() {
+    public Endereco getEndereco() {
         return endereco;
-    }
-
-    public String getCidade() {
-        return cidade;
     }
 
     public Long getPaisId() {
@@ -81,14 +66,6 @@ public class PagamentoResponse {
 
     public String getEstado() {
         return estado;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public String getCep() {
-        return cep;
     }
 }
 
