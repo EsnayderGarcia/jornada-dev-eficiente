@@ -7,14 +7,21 @@ import com.snayder.casadocodigo.utils.ValidationError;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.DataBinder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.InitBinder;
 
 import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
+	@InitBinder
+	private void activateDirectFieldAccess(DataBinder dataBinder) {
+		dataBinder.initDirectFieldAccess();
+	}
+
 	@ExceptionHandler(RecursoNaoEncontradoException.class)
 	public ResponseEntity<StandardError> recursoNaoEncontrado(HttpServletRequest req, RecursoNaoEncontradoException ex) {
 		StandardError error = new StandardError();
@@ -24,7 +31,7 @@ public class ResourceExceptionHandler {
 		error.setErro(ex.getMessage());
 		error.setPath(req.getRequestURI());
 
-		return new ResponseEntity<StandardError>(error, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
