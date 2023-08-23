@@ -1,5 +1,6 @@
 package com.snayder.casadocodigo.resources;
 
+import com.snayder.casadocodigo.exceptions.OperacaoInvalidaException;
 import com.snayder.casadocodigo.exceptions.RecursoNaoEncontradoException;
 import com.snayder.casadocodigo.utils.FieldMessage;
 import com.snayder.casadocodigo.utils.StandardError;
@@ -20,6 +21,18 @@ public class ResourceExceptionHandler {
 	@InitBinder
 	private void activateDirectFieldAccess(DataBinder dataBinder) {
 		dataBinder.initDirectFieldAccess();
+	}
+
+	@ExceptionHandler(OperacaoInvalidaException.class)
+	public ResponseEntity<StandardError> operacaoInvalida(HttpServletRequest req, OperacaoInvalidaException ex) {
+		StandardError error = new StandardError();
+
+		error.setTimestamp(LocalDateTime.now());
+		error.setStatus(HttpStatus.BAD_REQUEST.value());
+		error.setErro(ex.getMessage());
+		error.setPath(req.getRequestURI());
+
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(RecursoNaoEncontradoException.class)

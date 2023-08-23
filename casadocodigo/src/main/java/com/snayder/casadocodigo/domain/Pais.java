@@ -1,5 +1,6 @@
 package com.snayder.casadocodigo.domain;
 
+import com.snayder.casadocodigo.exceptions.OperacaoInvalidaException;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -45,5 +46,12 @@ public class Pais {
                 ", nome='" + nome + '\'' +
                 ", estados=" + estados +
                 '}';
+    }
+
+    public Estado obterEstado(Long estadoId) {
+        return estados.stream()
+                .filter(estado -> estado.getId() == estadoId)
+                .findFirst()
+                .orElseThrow(() -> new OperacaoInvalidaException("O estado informado não existe ou não pertence a este páis"));
     }
 }

@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.transaction.annotation.Transactional;
 
 public class PagamentoRequest {
     @NotBlank(message = "O campo nome é obrigatório.")
@@ -44,9 +45,14 @@ public class PagamentoRequest {
         this.estadoId = estadoId;
     }
 
+    @Transactional(readOnly = true)
     public Pagamento toModel(EntityManager manager) {
         Pais pais = manager.find(Pais.class, paisId);
-        Estado estado = manager.find(Estado.class, estadoId);
+        Estado estado = new Estado();
+
+        if(!pais.getEstados().isEmpty()) {
+            estado = pais.obterEstado(estadoId);
+        }
 
         return new Pagamento(nome, sobrenome, email, documento, endereco, pais, estado);
     }
