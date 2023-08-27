@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 @RequestMapping("livros")
 //5  pontos de entendimento
 public class LivroResource {
+    private final String JPQL_BUSCAR_LIVROS = "select l from Livro l join fetch l.categoria c join fetch l.autor a";
+
     @PersistenceContext
     private EntityManager manager;
 
@@ -34,7 +36,7 @@ public class LivroResource {
     @ResponseStatus(HttpStatus.OK)
     @Transactional(readOnly = true)
     public List<LivroMinResponse> buscar() {
-        return manager.createQuery("SELECT obj FROM Livro obj", Livro.class)
+        return manager.createQuery(JPQL_BUSCAR_LIVROS, Livro.class)
                 .getResultList()
                 .stream()
                 .map(LivroMinResponse::new)
@@ -46,8 +48,8 @@ public class LivroResource {
     @Transactional(readOnly = true)
     public LivroDetalheResponse buscarPorId(@PathVariable Long id) {
         Livro livro = manager.find(Livro.class, id);
-        if(livro == null)
-            throw new RecursoNaoEncontradoException("O livro de id "+id+ " não encontrado.");
+        if (livro == null)
+            throw new RecursoNaoEncontradoException("O livro de id " + id + " não encontrado.");
 
         return new LivroDetalheResponse(livro);
     }

@@ -19,6 +19,6 @@ public class ExistIdValidator implements ConstraintValidator<ExistId, Object> {
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
-       return manager.find(klass, value) != null;
+       return value == null || manager.find(klass, value) != null;
     }
 }

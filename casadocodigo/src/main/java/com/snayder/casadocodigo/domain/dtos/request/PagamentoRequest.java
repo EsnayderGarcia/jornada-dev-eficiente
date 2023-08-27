@@ -5,6 +5,7 @@ import com.snayder.casadocodigo.domain.Endereco;
 import com.snayder.casadocodigo.domain.Estado;
 import com.snayder.casadocodigo.domain.Pagamento;
 import com.snayder.casadocodigo.domain.Pais;
+import com.snayder.casadocodigo.exceptions.OperacaoInvalidaException;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -35,7 +36,10 @@ public class PagamentoRequest {
     private Long paisId;
     private Long estadoId;
 
-    public PagamentoRequest(String nome, String sobrenome, String email, String documento, Endereco endereco, Long paisId, Long estadoId) {
+    @Valid
+    private CarrinhoRequest carrinho;
+
+    public PagamentoRequest(String nome, String sobrenome, String email, String documento, Endereco endereco, Long paisId, Long estadoId, CarrinhoRequest carrinho) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.email = email;
@@ -43,6 +47,8 @@ public class PagamentoRequest {
         this.endereco = endereco;
         this.paisId = paisId;
         this.estadoId = estadoId;
+        this.carrinho = carrinho;
+        System.out.println(this.carrinho);
     }
 
     @Transactional(readOnly = true)
@@ -50,9 +56,8 @@ public class PagamentoRequest {
         Pais pais = manager.find(Pais.class, paisId);
         Estado estado = new Estado();
 
-        if(!pais.getEstados().isEmpty()) {
-            estado = pais.obterEstado(estadoId);
-        }
+        if(!pais.getEstados().isEmpty()) estado = pais.obterEstado(estadoId);
+        if(!carrinho.valorTotalEhValido(manager)) throw new OperacaoInvalidaException("O valor total calculado no sistema não é o mesmo informado.");
 
         return new Pagamento(nome, sobrenome, email, documento, endereco, pais, estado);
     }
