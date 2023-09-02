@@ -1,10 +1,7 @@
 package com.snayder.casadocodigo.domain.dtos.request;
 
 import com.snayder.casadocodigo.annotations.ExistId;
-import com.snayder.casadocodigo.domain.Endereco;
-import com.snayder.casadocodigo.domain.Estado;
-import com.snayder.casadocodigo.domain.Pagamento;
-import com.snayder.casadocodigo.domain.Pais;
+import com.snayder.casadocodigo.domain.*;
 import com.snayder.casadocodigo.exceptions.OperacaoInvalidaException;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
@@ -48,18 +45,24 @@ public class PagamentoRequest {
         this.paisId = paisId;
         this.estadoId = estadoId;
         this.carrinho = carrinho;
-        System.out.println(this.carrinho);
     }
 
     @Transactional(readOnly = true)
     public Pagamento toModel(EntityManager manager) {
         Pais pais = manager.find(Pais.class, paisId);
-        Estado estado = new Estado();
 
-        if(!pais.getEstados().isEmpty()) estado = pais.obterEstado(estadoId);
-        if(!carrinho.valorTotalEhValido(manager)) throw new OperacaoInvalidaException("O valor total calculado no sistema não é o mesmo informado.");
+        if (!this.carrinho.valorTotalEhValido(manager))
+            throw new OperacaoInvalidaException("O valor total calculado no sistema não é o mesmo informado.");
 
-        return new Pagamento(nome, sobrenome, email, documento, endereco, pais, estado);
+        Pagamento pagamento = new Pagamento(nome, sobrenome, email, documento, endereco, pais);
+        pagamento.setCarrinho(carrinho.toModel(manager));
+
+        if (!pais.getEstados().isEmpty()) {
+            Estado estado = pais.obterEstado(estadoId);
+            pagamento.setEstado(estado);
+        }
+
+        return pagamento;
     }
 }
 

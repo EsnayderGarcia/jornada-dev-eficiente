@@ -21,9 +21,12 @@ public class Pagamento {
     @Column(nullable = false)
     private String documento;
 
-    @Column(nullable = false)
     @Embedded
     private Endereco endereco;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "carrinho_id")
+    private Carrinho carrinho;
 
     @ManyToOne
     @JoinColumn(name = "paisId", nullable = false)
@@ -36,18 +39,25 @@ public class Pagamento {
     public Pagamento() {
     }
 
-    public Pagamento(String nome, String sobrenome, String email, String documento, Endereco endereco, Pais pais, Estado estado) {
+    public Pagamento(String nome, String sobrenome, String email, String documento, Endereco endereco, Pais pais) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.email = email;
         this.documento = documento;
         this.endereco = endereco;
         this.pais = pais;
-        this.estado = estado;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public Carrinho getCarrinho() {
+        return carrinho;
+    }
+
+    public void setCarrinho(Carrinho carrinho) {
+        this.carrinho = carrinho;
     }
 
     public void setId(Long id) {

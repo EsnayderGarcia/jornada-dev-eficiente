@@ -1,12 +1,12 @@
 package com.snayder.casadocodigo.domain.dtos.request;
 
 import com.snayder.casadocodigo.annotations.ExistId;
+import com.snayder.casadocodigo.domain.Carrinho;
+import com.snayder.casadocodigo.domain.ItemCarrinho;
 import com.snayder.casadocodigo.domain.Livro;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-
-import java.math.BigDecimal;
 
 public class ItemCarrinhoRequest {
     @NotNull(message = "O campo id do livro é obrigatório.")
@@ -20,7 +20,6 @@ public class ItemCarrinhoRequest {
    public ItemCarrinhoRequest(Long idLivro, Integer quantidade) {
         this.idLivro = idLivro;
         this.quantidade = quantidade;
-
     }
 
     public double getSubTotal(EntityManager manager) {
@@ -34,5 +33,10 @@ public class ItemCarrinhoRequest {
                 "idLivro=" + idLivro +
                 ", quantidade=" + quantidade +
                 '}';
+    }
+
+    public ItemCarrinho toModel(EntityManager manager, Carrinho carrinho) {
+        Livro livro = manager.find(Livro.class, idLivro);
+       return new ItemCarrinho(livro, carrinho, quantidade);
     }
 }

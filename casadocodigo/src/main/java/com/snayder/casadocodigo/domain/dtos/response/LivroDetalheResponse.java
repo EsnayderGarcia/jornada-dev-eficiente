@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class LivroDetalheResponse {
-    private Long id;
+    private final Long id;
     private String titulo;
     private String resumo;
     private String sumario;

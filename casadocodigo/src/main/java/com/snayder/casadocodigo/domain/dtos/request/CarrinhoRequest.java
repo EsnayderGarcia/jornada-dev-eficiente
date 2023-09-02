@@ -1,5 +1,8 @@
 package com.snayder.casadocodigo.domain.dtos.request;
 
+import com.snayder.casadocodigo.domain.Carrinho;
+import com.snayder.casadocodigo.domain.ItemCarrinho;
+import com.snayder.casadocodigo.domain.Pagamento;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -42,5 +45,16 @@ public class CarrinhoRequest {
                 "total=" + total +
                 ", itensCarrinho=" + itensCarrinho +
                 '}';
+    }
+
+    public Carrinho toModel(EntityManager manager) {
+        Carrinho carrinho = new Carrinho(total);
+
+        List<ItemCarrinho> itensCarrinho = this.itensCarrinho.stream()
+                .map(item -> item.toModel(manager, carrinho))
+                .toList();
+
+        carrinho.getItensCarrinho().addAll(itensCarrinho);
+        return carrinho;
     }
 }

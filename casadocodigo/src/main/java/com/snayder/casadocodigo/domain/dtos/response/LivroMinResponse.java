@@ -3,8 +3,8 @@ package com.snayder.casadocodigo.domain.dtos.response;
 import com.snayder.casadocodigo.domain.Livro;
 
 public class LivroMinResponse {
-    private Long id;
-    private String titulo;
+    private final Long id;
+    private final String titulo;
 
     public LivroMinResponse(Livro livro) {
         id = livro.getId();

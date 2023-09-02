@@ -3,6 +3,9 @@ package com.snayder.casadocodigo.domain.dtos.response;
 import com.snayder.casadocodigo.domain.Endereco;
 import com.snayder.casadocodigo.domain.Pagamento;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PagamentoResponse {
     private Long id;
     private String nome;
@@ -14,6 +17,7 @@ public class PagamentoResponse {
     private String pais;
     private Long estadoId;
     private String estado;
+    private CarrinhoResponse carrinho;
 
     public PagamentoResponse(Pagamento pagamento) {
         id = pagamento.getId();
@@ -24,8 +28,9 @@ public class PagamentoResponse {
         endereco = pagamento.getEndereco();
         paisId = pagamento.getPais().getId();
         pais = pagamento.getPais().getNome();
-        estadoId = pagamento.getEstado().getId();
-        estado = pagamento.getEstado().getNome();
+        estadoId = pagamento.getEstado() == null ? null : pagamento.getEstado().getId();
+        estado = pagamento.getEstado() == null ? null : pagamento.getEstado().getNome();
+        carrinho = new CarrinhoResponse(pagamento.getCarrinho());
     }
 
     public Long getId() {
@@ -66,6 +71,10 @@ public class PagamentoResponse {
 
     public String getEstado() {
         return estado;
+    }
+
+    public CarrinhoResponse getCarrinho() {
+        return carrinho;
     }
 }
 
