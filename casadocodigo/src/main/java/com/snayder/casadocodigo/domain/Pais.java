@@ -52,6 +52,6 @@ public class Pais {
         return estados.stream()
                 .filter(estado -> estado.getId() == estadoId)
                 .findFirst()
-                .orElseThrow(() -> new OperacaoInvalidaException("O estado informado não existe ou não pertence a este páis"));
+                .orElseThrow(() -> new OperacaoInvalidaException("Você deve informar um estado válido para o páis de id " + id + "."));
     }
 }

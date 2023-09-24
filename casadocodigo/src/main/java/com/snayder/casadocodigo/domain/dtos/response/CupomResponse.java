@@ -2,11 +2,12 @@ package com.snayder.casadocodigo.domain.dtos.response;
 
 import com.snayder.casadocodigo.domain.Cupom;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class CupomResponse {
     private final String codigo;
-    private final double desconto;
+    private final BigDecimal desconto;
     private final LocalDate validade;
 
 
@@ -20,7 +21,7 @@ public class CupomResponse {
         return codigo;
     }
 
-    public double getDesconto() {
+    public BigDecimal getDesconto() {
         return desconto;
     }
 

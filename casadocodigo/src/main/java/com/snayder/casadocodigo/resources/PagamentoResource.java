@@ -1,24 +1,20 @@
 package com.snayder.casadocodigo.resources;
 
-import java.util.List;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.snayder.casadocodigo.domain.Pagamento;
 import com.snayder.casadocodigo.domain.dtos.request.PagamentoRequest;
 import com.snayder.casadocodigo.domain.dtos.response.PagamentoResponse;
-
+import com.snayder.casadocodigo.validators.CupomValidator;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("pagamentos")
@@ -27,6 +23,14 @@ public class PagamentoResource {
     @PersistenceContext
     private EntityManager manager;
     private static final String JPQL_BUSCAR_PAGAMENTOS = "select p from Pagamento p";
+
+    @Autowired
+    private CupomValidator cupomValidator;
+
+    @InitBinder
+    public void initBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(cupomValidator);
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)

@@ -1,14 +1,17 @@
 package com.snayder.casadocodigo.domain.dtos.request;
 
 import com.snayder.casadocodigo.annotations.ExistId;
-import com.snayder.casadocodigo.domain.*;
-import com.snayder.casadocodigo.exceptions.OperacaoInvalidaException;
+import com.snayder.casadocodigo.domain.Endereco;
+import com.snayder.casadocodigo.domain.Estado;
+import com.snayder.casadocodigo.domain.Pagamento;
+import com.snayder.casadocodigo.domain.Pais;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 public class PagamentoRequest {
     @NotBlank(message = "O campo nome é obrigatório.")
@@ -33,10 +36,12 @@ public class PagamentoRequest {
     private Long paisId;
     private Long estadoId;
 
+    private String cupom;
+
     @Valid
     private CarrinhoRequest carrinho;
 
-    public PagamentoRequest(String nome, String sobrenome, String email, String documento, Endereco endereco, Long paisId, Long estadoId, CarrinhoRequest carrinho) {
+    public PagamentoRequest(String nome, String sobrenome, String email, String documento, Endereco endereco, Long paisId, Long estadoId, String cupom, CarrinhoRequest carrinho) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.email = email;
@@ -44,6 +49,7 @@ public class PagamentoRequest {
         this.endereco = endereco;
         this.paisId = paisId;
         this.estadoId = estadoId;
+        this.cupom = cupom;
         this.carrinho = carrinho;
     }
 
@@ -51,18 +57,24 @@ public class PagamentoRequest {
     public Pagamento toModel(EntityManager manager) {
         Pais pais = manager.find(Pais.class, paisId);
 
-        if (!this.carrinho.valorTotalEhValido(manager))
-            throw new OperacaoInvalidaException("O valor total calculado no sistema não é o mesmo informado.");
-
         Pagamento pagamento = new Pagamento(nome, sobrenome, email, documento, endereco, pais);
-        pagamento.setCarrinho(carrinho.toModel(manager));
 
         if (!pais.getEstados().isEmpty()) {
             Estado estado = pais.obterEstado(estadoId);
             pagamento.setEstado(estado);
         }
 
+        pagamento.carregarValorCompra(carrinho, manager);
+
+        if (StringUtils.hasText(cupom)) {
+            pagamento.aplicarCupom(cupom, manager);
+        }
+
         return pagamento;
+    }
+
+    public String getCupom() {
+        return cupom;
     }
 }
 

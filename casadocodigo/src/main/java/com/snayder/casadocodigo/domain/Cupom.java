@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -12,10 +13,10 @@ import java.util.Objects;
 public class Cupom {
     @Id
     private String codigo;
-    private Double desconto;
+    private BigDecimal desconto;
     private LocalDate validade;
 
-    public Cupom(String codigo, Double desconto, LocalDate validade) {
+    public Cupom(String codigo, BigDecimal desconto, LocalDate validade) {
         this.codigo = codigo;
         this.desconto = desconto;
         this.validade = validade;
@@ -32,11 +33,11 @@ public class Cupom {
         this.codigo = codigo;
     }
 
-    public Double getDesconto() {
+    public BigDecimal getDesconto() {
         return desconto;
     }
 
-    public void setDesconto(Double desconto) {
+    public void setDesconto(BigDecimal desconto) {
         this.desconto = desconto;
     }
 
@@ -59,5 +60,9 @@ public class Cupom {
     @Override
     public int hashCode() {
         return Objects.hash(codigo);
+    }
+
+    public boolean temDataValidadeVencida() {
+        return LocalDate.now().isAfter(validade);
     }
 }

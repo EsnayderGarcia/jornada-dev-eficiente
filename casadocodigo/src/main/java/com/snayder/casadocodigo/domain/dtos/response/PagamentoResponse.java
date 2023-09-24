@@ -1,10 +1,10 @@
 package com.snayder.casadocodigo.domain.dtos.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.snayder.casadocodigo.domain.Endereco;
 import com.snayder.casadocodigo.domain.Pagamento;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
 
 public class PagamentoResponse {
     private Long id;
@@ -15,8 +15,16 @@ public class PagamentoResponse {
     private Endereco endereco;
     private Long paisId;
     private String pais;
+
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private Long estadoId;
+
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private String estado;
+
+    private BigDecimal totalOriginal;
+    private BigDecimal total;
+
     private CarrinhoResponse carrinho;
 
     public PagamentoResponse(Pagamento pagamento) {
@@ -30,6 +38,8 @@ public class PagamentoResponse {
         pais = pagamento.getPais().getNome();
         estadoId = pagamento.getEstado() == null ? null : pagamento.getEstado().getId();
         estado = pagamento.getEstado() == null ? null : pagamento.getEstado().getNome();
+        total = pagamento.getTotal();
+        totalOriginal = pagamento.getTotalOriginal();
         carrinho = new CarrinhoResponse(pagamento.getCarrinho());
     }
 
@@ -75,6 +85,14 @@ public class PagamentoResponse {
 
     public CarrinhoResponse getCarrinho() {
         return carrinho;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public BigDecimal getTotalOriginal() {
+        return totalOriginal;
     }
 }
 
