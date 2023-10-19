@@ -1,8 +1,8 @@
 package com.snayder.casadocodigo.validators;
 
-import com.snayder.casadocodigo.domain.Cupom;
-import com.snayder.casadocodigo.domain.dtos.request.PagamentoRequest;
-import com.snayder.casadocodigo.repositories.CupomRepository;
+import com.snayder.casadocodigo.cupom.Cupom;
+import com.snayder.casadocodigo.cupom.CupomRepository;
+import com.snayder.casadocodigo.pagamento.PagamentoRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
