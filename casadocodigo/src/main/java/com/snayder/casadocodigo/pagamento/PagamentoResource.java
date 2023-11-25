@@ -1,10 +1,10 @@
 package com.snayder.casadocodigo.pagamento;
 
+import com.snayder.casadocodigo.endereco.estado.PreenchimentoEstadoValidator;
 import com.snayder.casadocodigo.validators.CupomValidator;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,16 +17,22 @@ import java.util.List;
 @RequestMapping("pagamentos")
 //3 pontos de entendimento
 public class PagamentoResource {
-    @PersistenceContext
-    private EntityManager manager;
     private static final String JPQL_BUSCAR_PAGAMENTOS = "select p from Pagamento p";
 
-    @Autowired
-    private CupomValidator cupomValidator;
+    @PersistenceContext
+    private EntityManager manager;
+
+    private final CupomValidator cupomValidator;
+    private final PreenchimentoEstadoValidator preenchimentoEstadoValidator;
+
+    public PagamentoResource(CupomValidator cupomValidator, PreenchimentoEstadoValidator preenchimentoEstadoValidator) {
+        this.cupomValidator = cupomValidator;
+        this.preenchimentoEstadoValidator = preenchimentoEstadoValidator;
+    }
 
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(cupomValidator);
+        webDataBinder.addValidators(cupomValidator, preenchimentoEstadoValidator);
     }
 
     @PostMapping

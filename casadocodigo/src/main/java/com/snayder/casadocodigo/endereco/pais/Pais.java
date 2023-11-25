@@ -1,11 +1,11 @@
 package com.snayder.casadocodigo.endereco.pais;
 
 import com.snayder.casadocodigo.endereco.estado.Estado;
-import com.snayder.casadocodigo.exceptions.OperacaoInvalidaException;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_pais")
@@ -17,7 +17,7 @@ public class Pais {
     @Column(unique = true)
     private String nome;
 
-    @OneToMany(mappedBy = "pais")
+    @OneToMany(mappedBy = "pais", fetch = FetchType.LAZY)
     private final List<Estado> estados = new ArrayList<>();
 
     public Long getId() {
@@ -41,18 +41,15 @@ public class Pais {
     }
 
     @Override
-    public String toString() {
-        return "Pais{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", estados=" + estados +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pais pais = (Pais) o;
+        return nome.equals(pais.nome);
     }
 
-    public Estado obterEstado(Long estadoId) {
-        return estados.stream()
-                .filter(estado -> estado.getId() == estadoId)
-                .findFirst()
-                .orElseThrow(() -> new OperacaoInvalidaException("Você deve informar um estado válido para o páis de id " + id + "."));
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome);
     }
 }

@@ -2,6 +2,7 @@ package com.snayder.casadocodigo.endereco.estado;
 
 import com.snayder.casadocodigo.endereco.pais.Pais;
 import jakarta.persistence.*;
+import org.springframework.validation.Errors;
 
 @Entity
 @Table(name = "tb_estado")
@@ -56,5 +57,10 @@ public class Estado {
                 ", nome='" + nome + '\'' +
                 ", pais=" + pais +
                 '}';
+    }
+
+    public void validarEstadoPertenceAoPais(Pais pais, Errors errors) {
+        if(!this.pais.getNome().equalsIgnoreCase(pais.getNome()))
+            errors.rejectValue("estadoId", null, "O estado informado não pertence ao país associado a este pagamento.");
     }
 }

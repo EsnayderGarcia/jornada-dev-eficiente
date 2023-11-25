@@ -5,6 +5,7 @@ import com.snayder.casadocodigo.cupom.CupomRepository;
 import com.snayder.casadocodigo.pagamento.PagamentoRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -25,19 +26,20 @@ public class CupomValidator implements Validator {
         PagamentoRequest pagamentoRequest = (PagamentoRequest) target;
         String codigoCupom = pagamentoRequest.getCupom();
 
-        if (codigoCupom != null && !codigoCupom.isBlank()) {
-            Optional<Cupom> possivelCupom = cupomRepository.findById(codigoCupom);
+        if (!StringUtils.hasText(codigoCupom))
+            return;
 
-            if(possivelCupom.isEmpty()) {
-                errors.rejectValue("cupom", null, "Cupom de código " + codigoCupom + " não foi encontrado.");
-                return;
-            }
+        Optional<Cupom> possivelCupom = cupomRepository.findById(codigoCupom);
 
-            Cupom cupom = possivelCupom.get();
+        if (possivelCupom.isEmpty()) {
+            errors.rejectValue("cupom", null, "Cupom de código " + codigoCupom + " não foi encontrado.");
+            return;
+        }
 
-            if (cupom.temDataValidadeVencida()) {
-                errors.rejectValue("cupom", null, "Cupom de código " + codigoCupom + " está com a data de validade vencida.");
-            }
+        Cupom cupom = possivelCupom.get();
+
+        if (cupom.temDataValidadeVencida()) {
+            errors.rejectValue("cupom", null, "Cupom de código " + codigoCupom + " está com a data de validade vencida.");
         }
     }
 }

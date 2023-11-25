@@ -39,6 +39,7 @@ public class PagamentoRequest {
     private String cupom;
 
     @Valid
+    @NotNull(message = "É necessário associar um carrinho a este pagamento.")
     private CarrinhoRequest carrinho;
 
     public PagamentoRequest(String nome, String sobrenome, String email, String documento, Endereco endereco, Long paisId, Long estadoId, String cupom, CarrinhoRequest carrinho) {
@@ -58,9 +59,8 @@ public class PagamentoRequest {
         Pais pais = manager.find(Pais.class, paisId);
         Pagamento pagamento = new Pagamento(nome, sobrenome, email, documento, endereco, pais);
 
-        if (!pais.getEstados().isEmpty()) {
-            Estado estado = pais.obterEstado(estadoId);
-            pagamento.setEstado(estado);
+        if ( estadoId != null) {
+            pagamento.setEstado(manager.find(Estado.class, estadoId));
         }
 
         pagamento.carregarValorCompra(carrinho, manager);
@@ -74,6 +74,14 @@ public class PagamentoRequest {
 
     public String getCupom() {
         return cupom;
+    }
+
+    public Long getPaisId() {
+        return paisId;
+    }
+
+    public Long getEstadoId() {
+        return estadoId;
     }
 }
 
